@@ -57,3 +57,31 @@ function promptCustomerForItem(inventory){
     });
 }
 
+// product quantity
+
+function promptCustomerForQuantity (product) { 
+    inquirer
+    .prompt([
+        {
+            type: "input",
+            name: "quantity",
+            message: "How many would you like? [Quit with Q]",
+            validate: function(val){
+                return val > 0 || val.toLowerCase() === "q";
+            }
+        }
+    ])
+    .then(function(val){
+        checkIfShouldExit(val.quantity);
+        var quantity = parseInt(val.quantity);
+
+        if (quantity > product.stock_quantity){
+            console.log("\nInsufficient quantity!");
+            loadProducts();
+        }
+        else {
+            makePurchase(product,quantity);
+        }
+    });
+}
+
